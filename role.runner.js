@@ -101,12 +101,16 @@ var roleRunner = {
             }
             
             else {
-                if(container.store < container.storeCapacity) {
+                container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_CONTAINER &&
+                                structure.store[RESOURCE_ENERGY] < structure.storeCapacity);
+                    }});
+                    console.log(container);
                     if(creep.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         console.log('stashing in container');
                         creep.moveTo(container);
                     }
-                }
             }
         }
     }

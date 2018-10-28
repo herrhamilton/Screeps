@@ -10,8 +10,9 @@ var roleRepair = {
         if(creep.memory.repairing) {
             var targets = creep.room.find(FIND_STRUCTURES);
             var damaged = _.filter(targets, (structure) => 
-                structure.hits < 0.95*structure.hitsMax && 
-                structure.structureType != 'constructedWall');
+                structure.structureType != 'constructedWall' && structure.structureType != 'rampart' && structure.hits < 0.95*structure.hitsMax || 
+                structure.structureType == 'constructedWall' && structure.hits < 0.00005*structure.hitsMax ||
+                structure.structureType == 'rampart' && structure.hits < 0.2 * structure.hitsMax);
             console.log(damaged);
             if(damaged.length > 0) {
                 if(creep.repair(damaged[0]) == ERR_NOT_IN_RANGE) {
@@ -22,7 +23,8 @@ var roleRepair = {
         else {
             var container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_CONTAINER);
+                        return (structure.structureType == STRUCTURE_CONTAINER &&
+                                structure.store[RESOURCE_ENERGY] >= creep.carryCapacity);
                     }
             });
             if(creep.withdraw(container, RESOURCE_ENERGY, creep.carryCapacity - creep.carry.amount) == ERR_NOT_IN_RANGE) {

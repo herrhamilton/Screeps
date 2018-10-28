@@ -28,11 +28,11 @@ module.exports.loop = function () {
     
     var minerCount = 1;
     var runnerCount = 2;
-    var builderCount = 5;
+    var builderCount = 3;
     var upgraderCount = 1;
     var repairerCount = 3;
     var controlMinerCount = 1;
-    
+
     if (spawn.room.energyAvailable >= 550) {
         if(miners.length < minerCount) {
             spawn.spawnCreep( [WORK,WORK,WORK,WORK,WORK,MOVE], 'Miner' + miners.length, { memory: { role: 'miner' }});
@@ -49,7 +49,7 @@ module.exports.loop = function () {
         else if(repairers.length < repairerCount) {
             spawn.spawnCreep( [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE], 'Repairer' + repairers.length, { memory: { role: 'repairer'}});
         }
-        else if(builders.length < builderCount && spawn.room.find(FIND_CONSTRUCTION_SITES) > 0) {
+        else if(builders.length < builderCount && spawn.room.find(FIND_CONSTRUCTION_SITES).length > 0) {
             spawn.spawnCreep( [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], 'Builder' + builders.length, { memory: { role: 'builder' }});
         }
     } 
